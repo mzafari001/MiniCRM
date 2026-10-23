@@ -1,0 +1,50 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">مدیریت مشتریان</h1>
+    <!-- دکمه افزودن مشتری جدید در آینده -->
+    <button routerLink="/customers/new" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+      مشتری جدید
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <!-- حالت لودینگ -->
+    <div class="text-center py-10 text-gray-500">
+      در حال بارگذاری اطلاعات...
+    </div>
+  } @else {
+    <!-- جدول مشتریان -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
+      <table class="min-w-full divide-y divide-gray-200 text-right">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">نام و نام خانوادگی</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">ایمیل</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">تلفن</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">شرکت</th>
+            <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase">وضعیت</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          @for (c of customers; track c.id) {
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ c.fullName }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ c.email || '-' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ c.phone }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ c.company || '-' }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  {{ c.status }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">هیچ مشتری‌ای یافت نشد.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
