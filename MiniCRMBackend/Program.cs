@@ -54,4 +54,5 @@ app.MapGet("/yy", () =>
 });
 
 app.MapCustomerEndpoints();
+app.MapDashboardEndpoints();
 app.Run();

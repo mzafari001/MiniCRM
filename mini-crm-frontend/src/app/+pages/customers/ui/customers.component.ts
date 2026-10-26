@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CustomerService } from '../../../../+shared/services/customer.service';
-import { Customer } from '../../../../+shared/models/customer.model';
+import { CustomerService } from '../../../+shared/services/customer.service';
+import { Customer } from '../../../+shared/models/customer.model'; 
 import { RouterLink } from '@angular/router';
 
 @Component({

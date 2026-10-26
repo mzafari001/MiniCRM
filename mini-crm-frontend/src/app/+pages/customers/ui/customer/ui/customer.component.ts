@@ -1,8 +1,8 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { Customer } from '../../../../../../+shared/models/customer.model';
-import { BackendService } from '../../../../../../+shared/services/backend.service';
+import { Customer } from '../../../../../+shared/models/customer.model';
+import { BackendService } from '../../../../../+shared/services/backend.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommandResultDto } from '../../../../../../+shared/models/command-result.model';
+import { CommandResultDto } from '../../../../../+shared/models/command-result.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -53,7 +53,7 @@ export class CustomerComponent implements OnInit {
       this.isLoading = false;
     }
   }
-  
+
 
   loadCustomer(id: number): void {
     this.isLoading = true;
