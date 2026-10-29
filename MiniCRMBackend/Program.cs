@@ -45,13 +45,13 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAngular");
 
 // Test endpoint
-app.MapGet("/yy", () =>
-{
-    return Results.Ok(new
-    {
-        message = "Backend is running."
-    });
-});
+// app.MapGet("/yy", () =>
+// {
+//     return Results.Ok(new
+//     {
+//         message = "Backend is running."
+//     });
+// });
 
 app.MapCustomerEndpoints();
 app.MapDashboardEndpoints();

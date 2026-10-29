@@ -68,18 +68,40 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
-
   onSave(): void {
     this.isSaving = true;
     this.errorMessage = '';
     this.successMessage = '';
+    const payload = {
+      fullName: this.customer.fullName,
+      phone: this.customer.phone,
+      email: this.customer.email,
+      company: this.customer.company,
+      status: this.customer.status,
+      userId: null
+    };
+    // تشخیص اینکه آیا در حال ایجاد مشتری جدید هستیم یا ویرایش
+    const isNew = this.customer.id === 0;
 
-    // ارسال به اندپوینت PUT بک‌اند
-    this.backend.put<CommandResultDto>(`/customers/${this.customer.id}`, this.customer).subscribe({
+    // اگر جدید است POST وگرنه PUT
+    const request$ = isNew
+      ? this.backend.post<CommandResultDto>(
+        '/api/v1/customers/create',
+        payload
+      )
+      : this.backend.put<CommandResultDto>(
+        `/api/v1/customers/${this.customer.id}`,
+        this.customer
+      ); 
+    request$.subscribe({
       next: (res) => {
         this.isSaving = false;
         if (res.successful) {
           this.successMessage = res.message || 'اطلاعات با موفقیت ذخیره شد.';
+          // پس از ذخیره موفق، بعد از چند لحظه یا بلافاصله به صفحه لیست مشتریان برمی‌گردیم:
+          setTimeout(() => {
+            this.router.navigate(['/customers']);
+          }, 1000);
         } else {
           this.errorMessage = res.message || 'عملیات با خطا مواجه شد.';
         }
@@ -90,6 +112,27 @@ export class CustomerComponent implements OnInit {
       }
     });
   }
+  // onSave(): void {
+  //   this.isSaving = true;
+  //   this.errorMessage = '';
+  //   this.successMessage = '';
+
+  //   // ارسال به اندپوینت PUT بک‌اند
+  //   this.backend.put<CommandResultDto>(`/customers/${this.customer.id}`, this.customer).subscribe({
+  //     next: (res) => {
+  //       this.isSaving = false;
+  //       if (res.successful) {
+  //         this.successMessage = res.message || 'اطلاعات با موفقیت ذخیره شد.';
+  //       } else {
+  //         this.errorMessage = res.message || 'عملیات با خطا مواجه شد.';
+  //       }
+  //     },
+  //     error: () => {
+  //       this.isSaving = false;
+  //       this.errorMessage = 'خطای سرور در ثبت تغییرات.';
+  //     }
+  //   });
+  // }
 
   goBack(): void {
     this.router.navigate(['/customers']);

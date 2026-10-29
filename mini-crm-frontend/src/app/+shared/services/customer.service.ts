@@ -20,7 +20,7 @@ export class CustomerService {
   }
 
   createCustomer(customer: CreateCustomer): Observable<any> {
-    return this.backend.post<any>(`${this.endpoint}/create`, customer);
+    return this.backend.post<any>(`${this.endpoint}/api/v1/create`, customer);
   }
 
   updateCustomer(id: number, customer: Partial<Customer>): Observable<any> {
