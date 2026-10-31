@@ -1,45 +1,95 @@
-<div class="customer-card">
-  <h2>جزئیات و ویرایش مشتری</h2>
+<section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm" dir="rtl">
+  <!-- هدر کارت جزئیات -->
+  <div class="mb-6 flex items-start justify-between border-b border-slate-100 pb-4">
+    <div>
+      <div class="flex items-center gap-3">
+        <h2 class="text-xl font-bold text-slate-800">
+          {{ customer().fullName }}
+        </h2>
+        <span
+          class="rounded-full border px-2.5 py-0.5 text-xs font-medium"
+          [class]="statusInfo().badgeClass"
+        >
+          {{ statusInfo().title }}
+        </span>
+      </div>
+      <p class="mt-1 text-xs text-slate-400">شناسه سیستم: #{{ customer().id }}</p>
+    </div>
 
-  @if (isLoading) {
-    <p class="loading">در حال بارگذاری اطلاعات مشتری...</p>
-  } @else {
+    <button
+      type="button"
+      class="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+      (click)="close.emit()"
+      title="بستن"
+    >
+      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
 
-    @if (errorMessage) {
-      <div class="alert error">{{ errorMessage }}</div>
+  <!-- مشخصات مشتری بر اساس اینترفیس واقعی شما -->
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div>
+      <p class="text-xs text-slate-400">شماره تماس</p>
+      <p class="mt-1 font-medium text-slate-800" dir="ltr">
+        {{ customer().phone }}
+      </p>
+    </div>
+
+    <div>
+      <p class="text-xs text-slate-400">ایمیل</p>
+      <p class="mt-1 font-medium text-slate-800" dir="ltr">
+        {{ customer().email || 'ثبت نشده' }}
+      </p>
+    </div>
+
+    <div>
+      <p class="text-xs text-slate-400">شرکت / سازمان</p>
+      <p class="mt-1 font-medium text-slate-800">
+        {{ customer().company || 'ثبت نشده' }}
+      </p>
+    </div>
+
+    <div>
+      <p class="text-xs text-slate-400">تاریخ ثبت</p>
+      <p class="mt-1 font-medium text-slate-800 text-xs text-slate-600" dir="ltr">
+        {{ customer().createdAt }}
+      </p>
+    </div>
+
+    @if (customer().userId) {
+      <div>
+        <p class="text-xs text-slate-400">شناسه کارشناس</p>
+        <p class="mt-1 font-medium text-slate-800">
+          کاربر شماره {{ customer().userId }}
+        </p>
+      </div>
     }
-    @if (successMessage) {
-      <div class="alert success">{{ successMessage }}</div>
-    }
+  </div>
 
-    <form (ngSubmit)="onSave()">
-      <div class="form-group">
-        <label>شناسه مشتری:</label>
-        <input type="text" [value]="customer.id" disabled />
-      </div>
+  <!-- دکمه‌های عملیات -->
+  <div class="mt-6 flex gap-3 border-t border-slate-100 pt-4">
+    <button
+      type="button"
+      class="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+      (click)="edit.emit(customer())"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+      </svg>
+      ویرایش مشتری
+    </button>
 
-      <div class="form-group">
-        <label>نام و نام خانوادگی:</label>
-        <input type="text" [(ngModel)]="customer.fullName" name="fullName" required />
-      </div>
-
-      <div class="form-group">
-        <label>ایمیل:</label>
-        <input type="email" [(ngModel)]="customer.email" name="email" required />
-      </div>
-
-      <div class="form-group">
-        <label>شماره تماس:</label>
-        <input type="text" [(ngModel)]="customer.phone" name="phoneNumber" />
-      </div>
-
-      <div class="actions">
-        <button type="submit" [disabled]="isSaving">
-          {{ isSaving ? 'در حال ذخیره...' : 'ذخیره تغییرات' }}
-        </button>
-        <button type="button" class="btn-cancel" (click)="goBack()">بازگشت</button>
-      </div>
-    </form>
-  }
-</div>
-
+    <button
+      type="button"
+      class="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100"
+      (click)="delete.emit(customer())"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+      حذف
+    </button>
+  </div>
+</section>
