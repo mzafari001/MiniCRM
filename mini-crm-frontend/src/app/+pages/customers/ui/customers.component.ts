@@ -116,6 +116,7 @@ export class CustomersComponent implements OnInit {
       company: customer.company ?? '',
       status: Number(customer.status)
     });
+    this.viewMode.set('list');
     this.createErrorMessage.set('');
     this.actionMessage.set('');
     this.showCreateForm.set(true);
@@ -196,10 +197,9 @@ export class CustomersComponent implements OnInit {
 
         this.cancelCreateCustomer();
         this.actionMessage.set(
-          result.message ||
-          (editing
+          editing
             ? 'مشتری با موفقیت ویرایش شد.'
-            : 'مشتری با موفقیت ثبت شد.')
+            : 'مشتری جدید با موفقیت ثبت شد.'
         );
         this.loadCustomers();
       },

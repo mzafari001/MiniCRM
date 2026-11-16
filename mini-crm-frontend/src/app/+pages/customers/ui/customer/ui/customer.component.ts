@@ -4,10 +4,11 @@ import { BackendService } from '../../../../../+shared/services/backend.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommandResultDto } from '../../../../../+shared/models/command-result.model';
 import { FormsModule } from '@angular/forms';
+import { CustomerActivitiesComponent } from '../../customer-activities/customer-activities.component';
 
 @Component({
   selector: 'app-customer',
-  imports: [FormsModule],
+  imports: [FormsModule ,CustomerActivitiesComponent ],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.scss'
 })

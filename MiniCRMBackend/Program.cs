@@ -55,4 +55,5 @@ app.UseCors("AllowAngular");
 
 app.MapCustomerEndpoints();
 app.MapDashboardEndpoints();
+app.MapActivityEndpoints();
 app.Run();

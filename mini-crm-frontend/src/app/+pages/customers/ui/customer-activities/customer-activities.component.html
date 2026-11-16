@@ -1,0 +1,78 @@
+<div class="space-y-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100" dir="rtl">
+
+  <!-- عنوان بخش -->
+  <div class="border-b border-slate-100 pb-4">
+    <h3 class="text-lg font-bold text-slate-800">تاریخچه تعاملات و وقایع</h3>
+    <p class="text-sm text-slate-500 mt-1">ثبت و مشاهده مکاتبات، تماس‌ها و یادداشت‌های مرتبط با این مشتری</p>
+  </div>
+
+  <!-- فرم ثبت فعالیت جدید -->
+  <form [formGroup]="activityForm" (ngSubmit)="onSubmit()" class="bg-slate-50 p-4 rounded-xl space-y-4 border border-slate-200">
+    <h4 class="text-sm font-semibold text-slate-700">ثبت یادداشت یا رویداد جدید</h4>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- نوع فعالیت -->
+      <div>
+        <label class="block text-xs font-medium text-slate-600 mb-1">نوع فعالیت</label>
+        <select formControlName="type" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none">
+          @for (item of activityTypes; track item.value) {
+            <option [value]="item.value">{{ item.label }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- تاریخ سررسید / زمان -->
+      <div>
+        <label class="block text-xs font-medium text-slate-600 mb-1">تاریخ و زمان</label>
+        <input type="datetime-local" formControlName="dueDate" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" />
+      </div>
+    </div>
+
+    <!-- متن یادداشت -->
+    <div>
+      <label class="block text-xs font-medium text-slate-600 mb-1">شرح و جزئیات</label>
+      <textarea formControlName="note" rows="2" placeholder="متن یادداشت یا شرح مکالمه را وارد کنید..." class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"></textarea>
+    </div>
+
+    <!-- دکمه ثبت -->
+    <div class="flex justify-end">
+      <button type="submit" [disabled]="activityForm.invalid" class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition-colors">
+        ثبت واقعه
+      </button>
+    </div>
+  </form>
+
+  <!-- لیست وقایع -->
+  <div class="space-y-3">
+    <h4 class="text-sm font-semibold text-slate-700">سوابق ثبت‌شده</h4>
+
+    @if (isLoading()) {
+      <div class="text-center py-6 text-sm text-slate-400">در حال بارگذاری سوابق...</div>
+    } @else if (activities().length === 0) {
+      <div class="text-center py-8 text-sm text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+        هنوز هیچ واقعه یا تعاملی برای این مشتری ثبت نشده است.
+      </div>
+    } @else {
+      <div class="space-y-3">
+        @for (act of activities(); track act.id) {
+          <div class="p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all space-y-2">
+            <div class="flex items-center justify-between">
+              <!-- برچسب نوع فعالیت -->
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                {{ typeLabels[act.type] }}
+              </span>
+              <!-- تاریخ ایجاد -->
+              <span class="text-xs text-slate-400">
+                {{ act.createdAt | date:'yyyy/MM/dd - HH:mm' }}
+              </span>
+            </div>
+            <!-- متن یادداشت -->
+            <p class="text-sm text-slate-700 whitespace-pre-line">{{ act.note }}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+</div>
+
